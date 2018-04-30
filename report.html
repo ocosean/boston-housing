@@ -11904,19 +11904,19 @@ div#notebook {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># TODO: Minimum price of the data</span>
-<span class="n">minimum_price</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+<span class="n">minimum_price</span> <span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">prices</span><span class="p">)</span>
 
 <span class="c1"># TODO: Maximum price of the data</span>
-<span class="n">maximum_price</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="n">maximum_price</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">prices</span><span class="p">)</span>
 
 <span class="c1"># TODO: Mean price of the data</span>
-<span class="n">mean_price</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">mean_price</span> <span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">prices</span><span class="p">)</span>
 
 <span class="c1"># TODO: Median price of the data</span>
-<span class="n">median_price</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+<span class="n">median_price</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">prices</span><span class="p">)</span>
 
 <span class="c1"># TODO: Standard deviation of prices of the data</span>
-<span class="n">std_price</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+<span class="n">std_price</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">prices</span><span class="p">)</span>
 
 <span class="c1"># Show the calculated statistics</span>
 <span class="k">print</span> <span class="s2">&quot;Statistics for Boston housing dataset:</span><span class="se">\n</span><span class="s2">&quot;</span>
@@ -11947,7 +11947,7 @@ Minimum price: $105,000.00
 Maximum price: $1,024,800.00
 Mean price: $454,342.94
 Median price $438,900.00
-Standard deviation of prices: $165,340.28
+Standard deviation of prices: $165,171.13
 </pre>
 </div>
 </div>
@@ -12140,6 +12140,11 @@ Standard deviation of prices: $165,340.28
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
 <p>The result shows that about 92% of the variance in Y is predictable from X. This model can be considered to successfully capture the behavior of the target variable. Besides the high r2 score, it is apparent from the observed predictions that the prediction is tracking well with the true value.</p>
+<p><strong>Response to Reviewer:</strong></p>
+<p>How is R2 score a measure of goodness of fit?</p>
+<ul>
+<li>R2 is a measure for goodness of fit in that it can tell you how close data are to the prediction. The r2 score basically represents the proportion of sum-of-squares error from a constant mean value prediction that is removed by using the fitted regression instead. In other words, the proportion of variance predictable using the independent variables. A high R2 score does not necessarily mean a good model. At least a review of the residuals should also be considered to ensure no structure (no bias in the prediction).Similarly, a low R2 score does not necessarily mean a bad model; it could just mean there is a lot variance (e.g., sample noise) noise in the data, for example. R2 score should be considered as one aspect of goodness of fit, but not the only aspect.  </li>
+</ul>
 
 </div>
 </div>
@@ -12223,6 +12228,13 @@ Standard deviation of prices: $165,340.28
 <p>Train test splits can be done is multiple ways to learn a model several times and compare the results to see how variant it is for specific different data sets. If the model has been supplied with enough data, it is more likely to generalize well and show consistent results for multiple split varations.</p>
 <p>Different types of models can also be compared by using training data seperate from cross-validation or tesintg data. Various model types can be independently evaluated from their training using the cross validation set, and then compared against each other to determine the best model type.</p>
 <p>The main idea is that using th same data for training and evaluating is not a fair assessment, since the model is already biased to explain the training data well.</p>
+<p><strong> Response to Reviewer: </strong></p>
+<ul>
+<li>It's not clear what exactly the reviewer wants me to address, but I'll give a try.</li>
+</ul>
+<p>First, I want to stand by my statement on sample size when it comes to over-fitting. There is definitely more to over-fitting, mainly with respect to the complexity of the model. But, there needs to be enough data to support a model's complexity or else overfitting will occur. I found a resource to support my point (<a href="http://blog.minitab.com/blog/understanding-statistics/how-to-avoid-overfitting-your-regression-model">http://blog.minitab.com/blog/understanding-statistics/how-to-avoid-overfitting-your-regression-model</a>). For example, a third degree polynomial model with only 3 training points will be over-fit to the training data; no compromises had to be made during training. If more data was available, and a 3rd degree polynomial was an approporiate model, a good model might had been found. This is along the lines of the problem you see in gaps on learning curves between train and test curves - not enough data was supplied to train the model adequately. Of course, overfitting can also occur when a model is too complex for the underlying process. Many approaches can be taken here including regularization, pruning, etc.</p>
+<p>With respect to how splitting your data can reveal underfitting and overfitting, I think the reviewer gave enough explaination so I will basically repeat. Underfitting is revealed when the model does not well describe the training data. The model would also perform poorly on the test set here. Overfitting is revealed by good training performance but bad test performance. The model has memorized the trainingn set rather than learn the underlying process of the data. Therefore, the model will do poorly to predict new unseen data (doesn't generalize well). You need the independent test data to show you that your model is not adequate - if you looked at your training performance alone you would think your model was great.</p>
+<p>I hope I provided enough additional understanding in my original answer to satisfy this question.</p>
 
 </div>
 </div>
@@ -12440,6 +12452,24 @@ Think about the pros and cons of adding more training points based on if the tra
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer: </strong></p>
 <p>Grid search technique trains models across a range of values for the model parameters or hyperparameters in order to find the best among them. For example, the above mentioned case of depth could be used. Grid search could train models from depth = 1 to 10 in interval of 1 (10 models) and then compare the validation result for each to determine the best model. This results in an optimal leanring algorithm.</p>
+<p><strong>Response to Reviewer: </strong></p>
+<p>Reviewer requested explanation of:</p>
+<p>1) What are the inputs to GridSearch?</p>
+<ul>
+<li>As mentioned above, model parameters are the basic input as the goal is to search the parameter space and return optimal model. WRT to actual gridSearch function, inputs are the model, the parameters, the scoring function and a spec for how the cross validation sets should be taken from the training data. </li>
+</ul>
+<p>2) What is the output?</p>
+<ul>
+<li>As mentioned above, the goal of gridsearch is to find the best paramters values to use in search of optimal model. So, parameter values are the basic output. WRT to actual implementation of the gridSearch function, the optimal model is output, or the model with the best performance using the given scoring function. Here we are using performance_function, which is r2 score.</li>
+</ul>
+<p>3) Do we need a performance metric to find best hyperparamter?</p>
+<ul>
+<li>Yes. 'Best' needs to be relative to something - we need a performance metric to determine 'best' hyperparameters, which here would be model with lowest r2 score on validation set.</li>
+</ul>
+<p>4) What does the grid signify in grid search?</p>
+<ul>
+<li>As mentioned above, the grid is a range over the parameter space at some specified resolution (e.g., max_depth 1 to 10 by 1, as mentioned above). This grid could be several dimensions if several hyperparameters are being explored. In short, the grid signifies the parameter space you want to search for best model performance. </li>
+</ul>
 
 </div>
 </div>
@@ -12467,6 +12497,9 @@ Think about the pros and cons of adding more training points based on if the tra
 <p><strong>Answer: </strong></p>
 <p>K-fold cross validation basically splits the data set into k equal pieces, and uses k-1 for training and 1 for validation. It does this for all combinations resulting in k different training and validation sets. The k models can then be combined in some way for optimal model (e.g., averaged).</p>
 <p>The benefit for grid search is that it allows grid search to see the entire data set, and not only rely on a single subset of the data. If the data is in some structure other than random (e.g., ordered) than grid search on the same part of the data set will be probably not be optimal. By also using differnt subsest of the data set, if you see a lot of variance among your models you now have the opporunity to combine your results and reduce that variance for the most optimal model, spanning parameter space and spanning the training data space.</p>
+<p><strong>Reviewer Response:</strong></p>
+<p>When I said we split on the data, I meant training data. As you mentioned - "that is how cross-validation works". I hope my reference to "k-1 for training and 1 for validation" will convince you of my intention. Sorry about that. If that confusion is the only issue, I think my above response will be adequate. The points made by the reviewer are understood - I'm not aware of a specific question being asked for further clarification.</p>
+<p>Just to be clear, k-fold cross validation splits the training set into k pieces. It uses k-1 parts for training and 1 for cross-validation. The cross-validation set is used to compare models and data sets against each other while not corrupting the independece of the test set as a final evaluation set. The test set needs to remain completely isolated from the learning process in order to be true test set evaluation. The k-fold technique allows you to use the entire training set while also performing cross-validation. You just have to perform the training k-times.</p>
 
 </div>
 </div>
